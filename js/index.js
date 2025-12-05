@@ -88,7 +88,6 @@ function checkMatch() {
 }
 
 function revealMessage() {
-    // WORDS IN CORRECT ORDER
     const words = ['YOU', 'ARE', 'SO', 'PRETTY', 'MY', 'BABY', 'NURSE', 'IAH'];
 
     const allCards = document.querySelectorAll('.memory-card');
@@ -97,15 +96,17 @@ function revealMessage() {
         setTimeout(() => {
             card.classList.remove('active', 'matched');
             card.classList.add('active');
-            card.innerText = words[i]; // now correct orientation
+            card.innerText = words[i];
         }, i * 200);
     });
 
+    // CHANGE HERE → 5 seconds before switching
     setTimeout(() => {
         document.getElementById('gameCard').style.display = 'none';
         document.getElementById('fiveCardSection').style.display = 'block';
-    }, 3000);
+    }, 5000);
 }
+
 
 // FIVE CARDS LOGIC
 let fiveActivated = [false, false, false, false, false];

@@ -156,19 +156,28 @@ button:active {
 
 .memory-card {
     width: 100%;
-    aspect-ratio: 1;
+    height: 70px;
+    /* INCREASED HEIGHT */
     background: linear-gradient(135deg, #ffb6d9 0%, #ffd4e9 100%);
     border-radius: 15px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 32px;
+
+    /* TEXT FIXES */
+    font-size: 18px;
     font-weight: bold;
     color: transparent;
+    text-align: center;
+    white-space: normal;
+    /* allow wrapping */
+    word-wrap: break-word;
+    line-height: 1.1;
+    padding: 5px;
+
     transition: all 0.4s ease;
     box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
-    position: relative;
     overflow: hidden;
 }
 
@@ -180,8 +189,8 @@ button:active {
 .memory-card.active {
     background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
     color: white;
-    transform: scale(1.05);
-    transition: 0.3s;
+    font-size: 18px;
+    /* smaller text so it fits */
 }
 
 .memory-card.matched {
