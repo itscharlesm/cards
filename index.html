@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Card Intro Site</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7e9ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card-container {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            display: none;
+        }
+
+        #introCard {
+            display: block;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #8a2be2;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .memory-card {
+            width: 70px;
+            height: 70px;
+            background: #d9b3ff;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: transparent;
+        }
+
+        .memory-card.active {
+            background: #8a2be2;
+            color: white;
+        }
+
+        .five-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .five-card {
+            background: #e4ccff;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .five-card.active {
+            background: #8a2be2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRO CARD -->
+    <div id="introCard" class="card-container">
+        <h2>Welcome ♥</h2>
+        <p>Click continue to start the game.</p>
+        <button onclick="startGame()">Continue</button>
+    </div>
+
+    <!-- MEMORY GAME CARD -->
+    <div id="gameCard" class="card-container">
+        <h3>Match the Cards</h3>
+        <p>Finish within <strong id="timer">30</strong>s!</p>
+        <div id="memoryGrid" class="memory-grid"></div>
+    </div>
+
+    <!-- FIVE CARDS SECTION -->
+    <div id="fiveCardSection" class="card-container">
+        <h3>Tap All 5 Cards</h3>
+        <div class="five-cards">
+            <div class="five-card" onclick="activateFiveCard(0)">Card 1</div>
+            <div class="five-card" onclick="activateFiveCard(1)">Card 2</div>
+            <div class="five-card" onclick="activateFiveCard(2)">Card 3</div>
+            <div class="five-card" onclick="activateFiveCard(3)">Card 4</div>
+            <div class="five-card" onclick="activateFiveCard(4)">Card 5</div>
+        </div>
+        <button id="openLetterBtn" style="display:none;" onclick="openLetter()">Open Letter</button>
+    </div>
+
+    <!-- LETTER CARD -->
+    <div id="letterCard" class="card-container">
+        <h2>My Letter for You ♥</h2>
+        <p style="font-family: 'Dancing Script', cursive; font-size: 22px;">
+            This is where your heartfelt message goes.
+        </p>
+    </div>
+
+<script>
+    // SHOW NEXT CARD
+    function startGame() {
+        document.getElementById('introCard').style.display = 'none';
+        document.getElementById('gameCard').style.display = 'block';
+        initGame();
+    }
+
+    // MEMORY GAME LOGIC
+    let cards = [];
+    let first = null;
+    let second = null;
+    let lock = false;
+    let timer;
+
+    function initGame() {
+        let values = ['A','A','B','B','C','C','D','D'];
+        values.sort(() => Math.random() - 0.5);
+        cards = values;
+        const grid = document.getElementById('memoryGrid');
+        grid.innerHTML = '';
+        cards.forEach((v, i) => {
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.dataset.value = v;
+            card.onclick = () => reveal(i, card);
+            grid.appendChild(card);
+        });
+        startTimer();
+    }
+
+    function startTimer() {
+        let t = 30;
+        document.getElementById('timer').innerText = t;
+        timer = setInterval(() => {
+            t--;
+            document.getElementById('timer').innerText = t;
+            if(t <= 0) {
+                clearInterval(timer);
+                initGame();
+            }
+        }, 1000);
+    }
+
+    function reveal(i, card) {
+        if (lock || card.classList.contains('active')) return;
+
+        card.classList.add('active');
+        card.innerText = card.dataset.value;
+
+        if (!first) {
+            first = card;
+        } else {
+            second = card;
+            lock = true;
+            setTimeout(checkMatch, 700);
+        }
+    }
+
+    function checkMatch() {
+        if (first.dataset.value !== second.dataset.value) {
+            first.classList.remove('active');
+            second.classList.remove('active');
+            first.innerText = '';
+            second.innerText = '';
+        }
+
+        first = null;
+        second = null;
+        lock = false;
+
+        const done = document.querySelectorAll('.memory-card.active').length;
+        if (done === cards.length) {
+            clearInterval(timer);
+            document.getElementById('gameCard').style.display = 'none';
+            document.getElementById('fiveCardSection').style.display = 'block';
+        }
+    }
+
+    // FIVE CARDS LOGIC
+    let fiveActivated = [false, false, false, false, false];
+
+    function activateFiveCard(i) {
+        const card = document.querySelectorAll('.five-card')[i];
+        card.classList.add('active');
+        fiveActivated[i] = true;
+
+        if (fiveActivated.every(v => v)) {
+            document.getElementById('openLetterBtn').style.display = 'block';
+        }
+    }
+
+    function openLetter() {
+        document.getElementById('fiveCardSection').style.display = 'none';
+        document.getElementById('letterCard').style.display = 'block';
+    }
+</script>
+</body>
+</html>
