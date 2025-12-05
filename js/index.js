@@ -38,7 +38,7 @@ function initGame() {
 }
 
 function startTimer() {
-    let t = 30;
+    let t = 15;
     document.getElementById('timer').innerText = t;
     timer = setInterval(() => {
         t--;
@@ -104,9 +104,8 @@ function revealMessage() {
     setTimeout(() => {
         document.getElementById('gameCard').style.display = 'none';
         document.getElementById('fiveCardSection').style.display = 'block';
-    }, 5000);
+    }, 3000);
 }
-
 
 // FIVE CARDS LOGIC
 let fiveActivated = [false, false, false, false, false];
