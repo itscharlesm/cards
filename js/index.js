@@ -88,6 +88,10 @@ function checkMatch() {
 }
 
 function revealMessage() {
+    const bgMusic = document.getElementById('bgMusic');
+    bgMusic.volume = 0.5; // optional
+    bgMusic.play().catch(() => {});
+    
     const words = ['YOU', 'ARE', 'SO', 'PRETTY', 'MY', 'BABY', 'NURSE', 'IAH'];
 
     const allCards = document.querySelectorAll('.memory-card');
