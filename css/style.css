@@ -157,25 +157,20 @@ button:active {
 .memory-card {
     width: 100%;
     height: 70px;
-    /* INCREASED HEIGHT */
     background: linear-gradient(135deg, #ffb6d9 0%, #ffd4e9 100%);
     border-radius: 15px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* TEXT FIXES */
     font-size: 18px;
     font-weight: bold;
     color: transparent;
     text-align: center;
     white-space: normal;
-    /* allow wrapping */
     word-wrap: break-word;
     line-height: 1.1;
     padding: 5px;
-
     transition: all 0.4s ease;
     box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
     overflow: hidden;
@@ -190,7 +185,6 @@ button:active {
     background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
     color: white;
     font-size: 18px;
-    /* smaller text so it fits */
 }
 
 .memory-card.matched {
@@ -229,14 +223,18 @@ button:active {
     padding: 20px;
     border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
     gap: 15px;
     font-size: 20px;
     font-weight: bold;
     color: #d63384;
     box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2);
+    min-height: 70px;
+    overflow: hidden;
 }
 
 .five-card:hover {
@@ -276,6 +274,7 @@ button:active {
     color: #ff69b4;
     transition: all 0.3s ease;
     background: white;
+    flex-shrink: 0;
 }
 
 .five-card.active .heart-icon {
@@ -303,6 +302,36 @@ button:active {
     75% {
         transform: scale(1.25);
     }
+}
+
+.five-card span {
+    flex-shrink: 0;
+}
+
+.five-message {
+    display: none;
+    margin-left: 10px;
+    font-style: italic;
+    font-size: 16px;
+    opacity: 0;
+    animation: fadeInMessage 0.5s ease forwards;
+}
+
+@keyframes fadeInMessage {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.five-card.active .five-message {
+    color: white;
+    font-size: 18px;
 }
 
 #openLetterBtn {

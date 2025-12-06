@@ -100,7 +100,6 @@ function revealMessage() {
         }, i * 200);
     });
 
-    // CHANGE HERE → 5 seconds before switching
     setTimeout(() => {
         document.getElementById('gameCard').style.display = 'none';
         document.getElementById('fiveCardSection').style.display = 'block';
@@ -113,15 +112,20 @@ let fiveActivated = [false, false, false, false, false];
 function activateFiveCard(i) {
     if (fiveActivated[i]) return;
 
-    const card = document.querySelectorAll('.five-card')[i];
+    const cards = document.querySelectorAll('.five-card');
+    const card = cards[i];
     const heartIcon = card.querySelector('.heart-icon');
+    const message = card.querySelector('.five-message');
 
     card.classList.add('active');
     heartIcon.innerText = '♥';
+    message.style.display = 'block';
     fiveActivated[i] = true;
 
     if (fiveActivated.every(v => v)) {
-        document.getElementById('openLetterBtn').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('openLetterBtn').style.display = 'block';
+        }, 500);
     }
 }
 
